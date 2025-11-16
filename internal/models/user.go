@@ -8,6 +8,7 @@ type User struct {
 	Email         string `gorm:"size:100;uniqueIndex" json:"email"`
 	PasswordHash  string `gorm:"size:255" json:"password_hash"`
 	EmailVerified bool   `gorm:"default:false" json:"email_verified"`
+	RefreshToken  string `gorm:"size:255" json:"refresh_token"`
 
 	Tasks []Task `gorm:"foreignKey:AssigneeID" json:"tasks"` // One-to-many relationship
 
