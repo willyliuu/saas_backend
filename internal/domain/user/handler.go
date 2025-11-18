@@ -8,7 +8,7 @@ type UserHandler struct {
 
 func (h *UserHandler) Register(c *gin.Context) {
 	var dto RegisterDTO
-	if err := c.ShouldBindJSON(dto); err != nil {
+	if err := c.ShouldBindJSON(&dto); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
@@ -23,7 +23,7 @@ func (h *UserHandler) Register(c *gin.Context) {
 
 func (h *UserHandler) Login(c *gin.Context) {
 	var dto LoginDTO
-	if err := c.ShouldBindJSON(dto); err != nil {
+	if err := c.ShouldBindJSON(&dto); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}

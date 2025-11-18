@@ -7,8 +7,10 @@ import (
 )
 
 type Config struct {
-	PORT        string
-	DatabaseURL string
+	PORT          string
+	DatabaseURL   string
+	JWTSecret     string
+	RefreshSecret string
 }
 
 func LoadConfig() *Config {
@@ -16,8 +18,10 @@ func LoadConfig() *Config {
 	_ = godotenv.Load()
 
 	cfg := &Config{
-		PORT:        getEnv("PORT", "8080"),
-		DatabaseURL: getEnv("DATABASE_URL", "postgres://user:password@localhost:5432/dbname?sslmode=disable"),
+		PORT:          getEnv("PORT", "8080"),
+		DatabaseURL:   getEnv("DATABASE_URL", "postgres://user:password@localhost:5432/dbname?sslmode=disable"),
+		JWTSecret:     getEnv("JWT_SECRET", "rahasia"),
+		RefreshSecret: getEnv("REFRESH_SECRET", "rahasia_refresh"),
 	}
 
 	return cfg

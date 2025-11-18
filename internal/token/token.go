@@ -19,7 +19,7 @@ func (t *TokenMaker) CreateAccessToken(userID uint) (string, error) {
 		"exp":     time.Now().Add(15 * time.Minute).Unix(),
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodES256, claims)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(t.JWTSecret))
 }
 
@@ -29,7 +29,7 @@ func (t *TokenMaker) CreateRefreshToken(userID uint) (string, error) {
 		"exp":     time.Now().Add(7 * 24 * time.Hour).Unix(),
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodES256, claims)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(t.RefreshSecret))
 }
 
