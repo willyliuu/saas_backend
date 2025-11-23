@@ -5,7 +5,9 @@ import (
 
 	"gin/internal/config"
 	"gin/internal/database"
+	"gin/internal/domain/organization"
 	"gin/internal/domain/user"
+	"gin/internal/middleware"
 	"gin/internal/migrations"
 	"gin/internal/routes"
 	"gin/internal/token"
@@ -39,7 +41,19 @@ func main() {
 	userService := &user.UserService{Repo: userRepo, Token: token}
 	userHandler := &user.UserHandler{Service: userService}
 
-	routes.UserRoutes(r, userHandler)
+	orgRepo := &organization.OrganizationRepository{}
+	orgService := &organization.OrganizationService{Repo: orgRepo}
+	orgHandler := &organization.OrganizationHandler{Service: orgService}
+
+	auth := middleware.AuthMiddleware(token)
+
+	r.POST("/register", userHandler.Register)
+	r.POST("/login", userHandler.Login)
+	r.POST("/refresh", userHandler.Refresh)
+
+	// protected routes
+	routes.UserRoutes(r, userHandler, auth)
+	routes.OrganizationRoutes(r, orgHandler, auth)
 
 	log.Printf("🚀 Server running on port %s", cfg.PORT)
 	r.Run(":" + cfg.PORT)

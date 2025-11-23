@@ -57,3 +57,23 @@ func (h *UserHandler) Refresh(c *gin.Context) {
 		"access_token": accessToken,
 	})
 }
+
+func (h *UserHandler) Me(c *gin.Context) {
+	userIDAny, exists := c.Get("user_id")
+	if !exists {
+		c.JSON(401, gin.H{"error": "Unauthorized"})
+	}
+
+	userID := userIDAny.(uint)
+
+	user, err := h.Service.Repo.FindByID(userID)
+	if err != nil {
+		c.JSON(404, gin.H{"error": "user not found"})
+	}
+
+	c.JSON(200, gin.H{
+		"id":         user.ID,
+		"email":      user.Email,
+		"created_at": user.CreatedAt,
+	})
+}

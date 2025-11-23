@@ -11,6 +11,12 @@ func (r *UserRepository) Create(user *models.User) error {
 	return database.DB.Create(user).Error
 }
 
+func (r *UserRepository) FindByID(userID uint) (*models.User, error) {
+	var user models.User
+	err := database.DB.Where(&models.User{ID: userID}).First(&user).Error
+	return &user, err
+}
+
 func (r *UserRepository) FindByEmail(email string) (*models.User, error) {
 	var user models.User
 	err := database.DB.Where(&models.User{Email: email}).First(&user).Error

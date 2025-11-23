@@ -6,8 +6,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func UserRoutes(r *gin.Engine, h *user.UserHandler) {
-	r.POST("/register", h.Register)
-	r.POST("/login", h.Login)
-	r.POST("/refresh", h.Refresh)
+func UserRoutes(r *gin.Engine, h *user.UserHandler, auth gin.HandlerFunc) {
+	u := r.Group("/users")
+	u.Use(auth)
+
+	u.GET("/me", h.Me)
 }

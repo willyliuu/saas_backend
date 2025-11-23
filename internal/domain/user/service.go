@@ -52,3 +52,7 @@ func (s *UserService) Refresh(old string) (string, string, error) {
 
 	return accessToken, refreshToken, nil
 }
+
+func (s *UserService) GetMe(userID uint) (*models.User, error) {
+	return s.Repo.FindByID(userID)
+}
