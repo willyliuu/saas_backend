@@ -64,15 +64,6 @@ func Migrations() *gormigrate.Gormigrate {
 				return d.Migrator().DropTable("tasks")
 			},
 		},
-		{
-			ID: "20251116007_add_refresh_token_to_users",
-			Migrate: func(d *gorm.DB) error {
-				return d.Migrator().AddColumn(&models.User{}, "RefreshToken")
-			},
-			Rollback: func(d *gorm.DB) error {
-				return d.Migrator().DropColumn(&models.User{}, "RefreshToken")
-			},
-		},
 	})
 
 	return m
