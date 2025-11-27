@@ -13,7 +13,7 @@ type Project struct {
 	OrganizationID uint         `json:"organization_id"`
 	Organization   Organization `gorm:"foreignKey:OrganizationID;references:ID;constraint:OnDelete:CASCADE" json:"organization"`
 
-	Tasks []Task // One-to-many relationship
+	Tasks []Task `gorm:"constraint:OnDelete:CASCADE"` // One-to-many relationship
 
 	CreatedAt time.Time `gorm:"autoCreateTime" json:"created_at"`
 	UpdatedAt time.Time `gorm:"autoUpdateTime" json:"updated_at"`
