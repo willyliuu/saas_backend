@@ -24,3 +24,11 @@ func (r *OrganizationRepository) FindByID(orgID uint) (*models.Organization, err
 
 	return &organization, err
 }
+
+func (r *OrganizationRepository) Update(organization *models.Organization) error {
+	return database.DB.Save(organization).Error
+}
+
+func (r *OrganizationRepository) Delete(id uint) error {
+	return database.DB.Where(&models.Organization{ID: id}).Delete(&models.Organization{}).Error
+}

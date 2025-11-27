@@ -27,3 +27,24 @@ func (s *OrganizationService) FindAll() (*[]models.Organization, error) {
 func (s *OrganizationService) FindByID(orgID uint) (*models.Organization, error) {
 	return s.Repo.FindByID(orgID)
 }
+
+func (s *OrganizationService) Update(id uint, dto UpdateOrganizationDTO) (*models.Organization, error) {
+	// check if the organization exists
+	organization, err := s.Repo.FindByID(id)
+	if err != nil {
+		return organization, err
+	}
+
+	// update field
+	organization.Name = dto.Name
+
+	if err := s.Repo.Update(organization); err != nil {
+		return nil, err
+	}
+
+	return organization, nil
+}
+
+func (s *OrganizationService) Delete(id uint) error {
+	return s.Repo.Delete(id)
+}
