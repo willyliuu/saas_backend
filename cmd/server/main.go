@@ -5,7 +5,10 @@ import (
 
 	"gin/internal/config"
 	"gin/internal/database"
+	"gin/internal/domain/invite"
 	"gin/internal/domain/organization"
+	"gin/internal/domain/project"
+	"gin/internal/domain/task"
 	"gin/internal/domain/user"
 	"gin/internal/middleware"
 	"gin/internal/migrations"
@@ -41,11 +44,23 @@ func main() {
 	userService := &user.UserService{Repo: userRepo, Token: token}
 	userHandler := &user.UserHandler{Service: userService}
 
+	auth := middleware.AuthMiddleware(token)
+
 	orgRepo := &organization.OrganizationRepository{}
 	orgService := &organization.OrganizationService{Repo: orgRepo}
 	orgHandler := &organization.OrganizationHandler{Service: orgService}
 
-	auth := middleware.AuthMiddleware(token)
+	inviteRepo := &invite.InviteRepository{}
+	inviteService := &invite.InviteService{Repo: inviteRepo}
+	inviteHandler := &invite.InviteHandler{Service: inviteService}
+
+	projectRepo := &project.ProjectRepository{}
+	projectService := &project.ProjectService{Repo: projectRepo}
+	projectHandler := &project.ProjectHandler{Service: projectService}
+
+	taskRepo := &task.TaskRepository{}
+	taskService := &task.TaskService{Repo: taskRepo}
+	taskHandler := &task.TaskHandler{Service: taskService}
 
 	r.POST("/register", userHandler.Register)
 	r.POST("/login", userHandler.Login)
@@ -53,7 +68,10 @@ func main() {
 
 	// protected routes
 	routes.UserRoutes(r, userHandler, auth)
-	routes.OrganizationRoutes(r, orgHandler, auth)
+	routes.OrganizationRoutes(r, orgHandler, inviteHandler, projectHandler, auth)
+	routes.InviteRoutes(r, inviteHandler, auth)
+	routes.ProjectRoutes(r, projectHandler, taskHandler, auth)
+	routes.TaskRoutes(r, taskHandler, auth)
 
 	log.Printf("🚀 Server running on port %s", cfg.PORT)
 	r.Run(":" + cfg.PORT)
