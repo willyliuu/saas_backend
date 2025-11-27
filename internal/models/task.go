@@ -14,8 +14,8 @@ type Task struct {
 	ProjectID uint    `json:"project_id"`
 	Project   Project `gorm:"foreignKey:ProjectID;references:ID;constraint:OnDelete:CASCADE" json:"project"`
 
-	AssigneeID uint `json:"assignee_id"`
-	Assignee   User `gorm:"foreignKey:AssigneeID;references:ID;constraint:OnDelete:SET NULL" json:"assignee"`
+	AssigneeID *uint `json:"assignee_id"`
+	Assignee   User  `gorm:"foreignKey:AssigneeID;references:ID;constraint:OnDelete:SET NULL" json:"assignee"`
 
 	CreatedAt time.Time `gorm:"autoCreateTime" json:"created_at"`
 	UpdatedAt time.Time `gorm:"autoUpdateTime" json:"updated_at"`
