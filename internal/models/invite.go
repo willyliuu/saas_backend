@@ -14,6 +14,7 @@ type Invite struct {
 
 	Token     string    `gorm:"size:255" json:"token"`
 	ExpiresAt time.Time `json:"expires_at"`
+	Status    string    `gorm:"size:50" json:"status"`
 
 	CreatedAt time.Time `gorm:"autoCreateTime" json:"created_at"`
 	UpdatedAt time.Time `gorm:"autoUpdateTime" json:"updated_at"`
