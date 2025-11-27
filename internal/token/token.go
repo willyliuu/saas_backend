@@ -13,20 +13,22 @@ type TokenMaker struct {
 	RefreshSecret string
 }
 
-func (t *TokenMaker) CreateAccessToken(userID uint) (string, error) {
+func (t *TokenMaker) CreateAccessToken(userID uint, userEmail string) (string, error) {
 	claims := jwt.MapClaims{
-		"user_id": userID,
-		"exp":     time.Now().Add(15 * time.Minute).Unix(),
+		"user_id":    userID,
+		"user_email": userEmail,
+		"exp":        time.Now().Add(15 * time.Minute).Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(t.JWTSecret))
 }
 
-func (t *TokenMaker) CreateRefreshToken(userID uint) (string, error) {
+func (t *TokenMaker) CreateRefreshToken(userID uint, userEmail string) (string, error) {
 	claims := jwt.MapClaims{
-		"user_id": userID,
-		"exp":     time.Now().Add(7 * 24 * time.Hour).Unix(),
+		"user_id":    userID,
+		"user_email": userEmail,
+		"exp":        time.Now().Add(7 * 24 * time.Hour).Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

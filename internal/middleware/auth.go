@@ -29,8 +29,10 @@ func AuthMiddleware(t *token.TokenMaker) gin.HandlerFunc {
 
 		claims := parsed.Claims.(jwt.MapClaims)
 		userID := uint(claims["user_id"].(float64)) //? what does this mean
+		userEmail := (claims["user_email"].(string))
 
 		c.Set("user_id", userID)
+		c.Set("user_email", userEmail)
 
 		c.Next()
 	}

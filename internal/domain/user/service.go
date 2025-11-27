@@ -31,8 +31,8 @@ func (s *UserService) Login(dto LoginDTO) (string, string, error) {
 		return "", "", errors.New("invalid credentials")
 	}
 
-	accessToken, _ := s.Token.CreateAccessToken(user.ID)
-	refreshToken, _ := s.Token.CreateRefreshToken(user.ID)
+	accessToken, _ := s.Token.CreateAccessToken(user.ID, user.Email)
+	refreshToken, _ := s.Token.CreateRefreshToken(user.ID, user.Email)
 
 	s.Repo.UpdateRefreshToken(user.ID, refreshToken)
 
@@ -45,8 +45,8 @@ func (s *UserService) Refresh(old string) (string, string, error) {
 		return "", "", errors.New("invalid refresh token")
 	}
 
-	accessToken, _ := s.Token.CreateAccessToken(user.ID)
-	refreshToken, _ := s.Token.CreateRefreshToken(user.ID)
+	accessToken, _ := s.Token.CreateAccessToken(user.ID, user.Email)
+	refreshToken, _ := s.Token.CreateRefreshToken(user.ID, user.Email)
 
 	s.Repo.UpdateRefreshToken(user.ID, refreshToken)
 
